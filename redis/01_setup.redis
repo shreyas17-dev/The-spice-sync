@@ -1,0 +1,12 @@
+# =====================================================================
+#  01_setup.redis : Redis users (ACL) for the food delivery platform
+#  Run once as the default admin:  grep -v '^#' redis/01_setup.redis | redis-cli
+# =====================================================================
+
+# The Next.js API: full read/write on application keys, no dangerous admin commands
+ACL SETUSER fd_api on >Api#2026redis ~cart:* ~partners:geo ~partner:* ~order:* ~notif:* ~activity:log ~session:* &order:* +@all -@dangerous
+
+# The live-tracking page server: read-only on tracking data and the order channels
+ACL SETUSER fd_tracking on >Track#2026redis ~order:*:events ~partners:geo &order:* -@all +xrange +xrevrange +xread +geopos +geosearch +subscribe +ping
+
+ACL LIST

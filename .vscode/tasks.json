@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Set up MySQL database",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\scripts\\setup-database.ps1", "-NoPause"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "focus": true, "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "2. Set up Redis (Memurai)",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\scripts\\setup-redis.ps1", "-NoPause"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "3. Install packages",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\scripts\\install.ps1"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "4. Start BiteRoute",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\scripts\\start-dev.ps1"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Redis + install + start (after the database)",
+      "dependsOrder": "sequence",
+      "dependsOn": ["2. Set up Redis (Memurai)", "3. Install packages", "4. Start BiteRoute"],
+      "problemMatcher": []
+    }
+  ]
+}

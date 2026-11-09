@@ -1,0 +1,124 @@
+# 02_seed.redis : sample real-time data that matches 07_seed.sql
+# Load with:  grep -v '^#' redis/02_seed.redis | redis-cli
+FLUSHDB
+GEOADD partners:geo 77.603115 12.986554 1
+SET partner:1:ping ONLINE EX 900
+GEOADD partners:geo 77.614021 12.919926 2
+SET partner:2:ping BUSY EX 900
+GEOADD partners:geo 77.666169 12.931594 3
+SET partner:3:ping ONLINE EX 900
+GEOADD partners:geo 77.603449 12.922826 4
+SET partner:4:ping BUSY EX 900
+GEOADD partners:geo 77.672506 12.920796 5
+SET partner:5:ping ONLINE EX 900
+GEOADD partners:geo 77.626037 12.934295 6
+SET partner:6:ping BUSY EX 900
+GEOADD partners:geo 77.666597 12.933324 7
+SET partner:7:ping ONLINE EX 900
+GEOADD partners:geo 72.904943 19.117779 9
+SET partner:9:ping BUSY EX 900
+GEOADD partners:geo 72.826874 19.056647 10
+SET partner:10:ping ONLINE EX 900
+GEOADD partners:geo 72.830639 18.998001 11
+SET partner:11:ping ONLINE EX 900
+GEOADD partners:geo 72.824655 19.135789 13
+SET partner:13:ping BUSY EX 900
+GEOADD partners:geo 72.89598 19.109168 14
+SET partner:14:ping ONLINE EX 900
+GEOADD partners:geo 72.899582 19.109074 15
+SET partner:15:ping ONLINE EX 900
+GEOADD partners:geo 78.394322 17.450245 18
+SET partner:18:ping BUSY EX 900
+GEOADD partners:geo 78.411136 17.435667 19
+SET partner:19:ping BUSY EX 900
+GEOADD partners:geo 78.444391 17.415353 20
+SET partner:20:ping ONLINE EX 900
+GEOADD partners:geo 78.397114 17.450568 22
+SET partner:22:ping ONLINE EX 900
+XADD order:753:events * status PLACED note "Placed"
+EXPIRE order:753:events 86400
+LPUSH notif:customer:59 "{\"order_id\":753,\"text\":\"Order #753 is placed\"}"
+LTRIM notif:customer:59 0 49
+EXPIRE notif:customer:59 2592000
+XADD order:754:events * status PLACED note "Placed"
+EXPIRE order:754:events 86400
+LPUSH notif:customer:40 "{\"order_id\":754,\"text\":\"Order #754 is placed\"}"
+LTRIM notif:customer:40 0 49
+EXPIRE notif:customer:40 2592000
+XADD order:755:events * status PLACED note "Placed"
+EXPIRE order:755:events 86400
+LPUSH notif:customer:29 "{\"order_id\":755,\"text\":\"Order #755 is placed\"}"
+LTRIM notif:customer:29 0 49
+EXPIRE notif:customer:29 2592000
+XADD order:756:events * status PLACED note "Placed"
+XADD order:756:events * status CONFIRMED partner_id 6 note "Confirmed"
+EXPIRE order:756:events 86400
+LPUSH notif:customer:24 "{\"order_id\":756,\"text\":\"Order #756 is confirmed\"}"
+LTRIM notif:customer:24 0 49
+EXPIRE notif:customer:24 2592000
+XADD order:757:events * status PLACED note "Placed"
+XADD order:757:events * status CONFIRMED partner_id 19 note "Confirmed"
+EXPIRE order:757:events 86400
+LPUSH notif:customer:44 "{\"order_id\":757,\"text\":\"Order #757 is confirmed\"}"
+LTRIM notif:customer:44 0 49
+EXPIRE notif:customer:44 2592000
+XADD order:758:events * status PLACED note "Placed"
+XADD order:758:events * status CONFIRMED partner_id 9 note "Confirmed"
+XADD order:758:events * status PREPARING note "Preparing"
+EXPIRE order:758:events 86400
+LPUSH notif:customer:41 "{\"order_id\":758,\"text\":\"Order #758 is preparing\"}"
+LTRIM notif:customer:41 0 49
+EXPIRE notif:customer:41 2592000
+XADD order:759:events * status PLACED note "Placed"
+XADD order:759:events * status CONFIRMED partner_id 18 note "Confirmed"
+XADD order:759:events * status PREPARING note "Preparing"
+EXPIRE order:759:events 86400
+LPUSH notif:customer:57 "{\"order_id\":759,\"text\":\"Order #759 is preparing\"}"
+LTRIM notif:customer:57 0 49
+EXPIRE notif:customer:57 2592000
+XADD order:760:events * status PLACED note "Placed"
+XADD order:760:events * status CONFIRMED partner_id 2 note "Confirmed"
+XADD order:760:events * status PREPARING note "Preparing"
+XADD order:760:events * status READY note "Ready"
+EXPIRE order:760:events 86400
+LPUSH notif:customer:12 "{\"order_id\":760,\"text\":\"Order #760 is ready\"}"
+LTRIM notif:customer:12 0 49
+EXPIRE notif:customer:12 2592000
+XADD order:761:events * status PLACED note "Placed"
+XADD order:761:events * status CONFIRMED partner_id 4 note "Confirmed"
+XADD order:761:events * status PREPARING note "Preparing"
+XADD order:761:events * status READY note "Ready"
+XADD order:761:events * status PICKED_UP note "Picked Up"
+XADD order:761:events * type location lat 12.930220 long 77.589776
+XADD order:761:events * type location lat 12.926414 long 77.596791
+XADD order:761:events * type location lat 12.922609 long 77.603807
+EXPIRE order:761:events 86400
+LPUSH notif:customer:25 "{\"order_id\":761,\"text\":\"Order #761 is picked up\"}"
+LTRIM notif:customer:25 0 49
+EXPIRE notif:customer:25 2592000
+XADD order:762:events * status PLACED note "Placed"
+XADD order:762:events * status CONFIRMED partner_id 13 note "Confirmed"
+XADD order:762:events * status PREPARING note "Preparing"
+XADD order:762:events * status READY note "Ready"
+XADD order:762:events * status PICKED_UP note "Picked Up"
+XADD order:762:events * type location lat 19.137644 long 72.826019
+XADD order:762:events * type location lat 19.135731 long 72.825336
+XADD order:762:events * type location lat 19.133819 long 72.824654
+EXPIRE order:762:events 86400
+LPUSH notif:customer:34 "{\"order_id\":762,\"text\":\"Order #762 is picked up\"}"
+LTRIM notif:customer:34 0 49
+EXPIRE notif:customer:34 2592000
+HSET cart:55 restaurant_id 17 item:169 1 item:164 1
+EXPIRE cart:55 604800
+HSET cart:4 restaurant_id 3 item:32 2 item:30 1
+EXPIRE cart:4 604800
+HSET cart:23 restaurant_id 4 item:41 1 item:39 1
+EXPIRE cart:23 604800
+XADD activity:log MAXLEN ~ 10000 * actor_role admin actor_id 1 action APPROVE_RESTAURANT entity restaurant entity_id 17
+XADD activity:log MAXLEN ~ 10000 * actor_role admin actor_id 2 action VERIFY_PARTNER entity delivery_partner entity_id 22
+XADD activity:log MAXLEN ~ 10000 * actor_role admin actor_id 1 action SUSPEND_RESTAURANT entity restaurant entity_id 18
+XADD activity:log MAXLEN ~ 10000 * actor_role admin actor_id 3 action BLOCK_PARTNER entity delivery_partner entity_id 16
+XADD activity:log MAXLEN ~ 10000 * actor_role owner actor_id 4 action UPDATE_MENU_PRICE entity menu_item entity_id 34
+XADD activity:log MAXLEN ~ 10000 * actor_role admin actor_id 1 action CREATE_COUPON entity coupon entity_id 3
+HSET session:demo-7f3a9c customer_id 7 role customer login_at 2026-11-08T10:15:00+05:30
+EXPIRE session:demo-7f3a9c 86400

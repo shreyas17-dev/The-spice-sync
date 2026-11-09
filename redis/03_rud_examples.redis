@@ -1,0 +1,55 @@
+# =====================================================================
+#  03_rud_examples.redis : create, read, update and delete on Redis data
+#  Run after 02_seed.redis:  grep -v '^#' redis/03_rud_examples.redis | redis-cli
+# =====================================================================
+
+# ---------- CREATE (customer 7 starts a cart at Biryani Bhavan) ----------
+HSET cart:7 restaurant_id 2 item:12 2 item:17 1
+EXPIRE cart:7 604800
+
+# ---------- READ ----------
+# riders within 5 km of Biryani Bhavan (restaurant 2), closest first
+GEOSEARCH partners:geo FROMLONLAT 77.627957 12.935845 BYRADIUS 5 km ASC WITHDIST COUNT 5
+# where is partner 3 right now?
+GEOPOS partners:geo 3
+# full tracking history of order 761, then only the latest event
+XRANGE order:761:events - +
+XREVRANGE order:761:events + - COUNT 1
+# latest notifications of customer 25
+LRANGE notif:customer:25 0 4
+# last five admin actions for the dashboard
+XREVRANGE activity:log + - COUNT 5
+# the cart, the session and how long the session has left
+HGETALL cart:7
+HGETALL session:demo-7f3a9c
+TTL session:demo-7f3a9c
+
+# ---------- UPDATE ----------
+# one more Chicken Dum Biryani in the cart
+HINCRBY cart:7 item:12 1
+# partner 3 moved; XX = update an existing member only
+GEOADD partners:geo XX 77.6260 12.9341 3
+SET partner:3:ping ONLINE EX 60
+# new location point and the final status for order 761
+XADD order:761:events * type location lat 12.929800 long 77.586100
+XADD order:761:events * status DELIVERED note "Delivered"
+PUBLISH order:761 "{\"status\":\"DELIVERED\"}"
+LPUSH notif:customer:25 "{\"order_id\":761,\"text\":\"Order #761 is delivered. Rate your meal!\"}"
+LTRIM notif:customer:25 0 49
+# sliding session: activity extends the login by another day
+EXPIRE session:demo-7f3a9c 86400
+
+# ---------- DELETE ----------
+# remove one dish, then the whole cart after checkout
+HDEL cart:7 item:17
+DEL cart:7
+# partner 3 goes offline: GEO data lives in a sorted set, so ZREM removes the member
+ZREM partners:geo 3
+DEL partner:3:ping
+# keep only the latest notification for customer 25
+LTRIM notif:customer:25 0 0
+# tracking history disappears on its own 24 hours after delivery
+EXPIRE order:761:events 86400
+# logout
+DEL session:demo-7f3a9c
+EXISTS cart:7 session:demo-7f3a9c

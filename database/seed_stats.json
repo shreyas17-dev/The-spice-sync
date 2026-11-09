@@ -1,0 +1,22 @@
+{
+ "pincode": 21,
+ "admin": 3,
+ "restaurant_owner": 12,
+ "customer": 60,
+ "delivery_partner": 24,
+ "address": 96,
+ "restaurant": 20,
+ "restaurant_cuisine": 41,
+ "menu_item": 197,
+ "coupon": 10,
+ "orders": 762,
+ "order_item": 1581,
+ "payment": 762,
+ "delivery": 698,
+ "review": 427,
+ "live_orders": 10,
+ "delivered": 691,
+ "cancelled": 61,
+ "coupon_orders": 148,
+ "redis_commands": 124
+}
